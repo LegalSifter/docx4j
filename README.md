@@ -1,6 +1,9 @@
 README
 ======
 
+If groovy console gets in a shitty shape, run a Java test for sanity.
+Then change the the classpath of the module to docx4j-tests
+
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.docx4j/docx4j/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.docx4j/docx4j)
 
 What is docx4j?

@@ -4,11 +4,10 @@
             [me.raynes.fs :as fs]
             [ring.middleware.defaults :refer [wrap-defaults site-defaults]])
   (:import [org.docx4j Docx4J TraversalUtil XmlUtils]
-           org.docx4j.openpackaging.parts.WordprocessingML.CommentsPart
+           org.docx4j.anon.Anonymize
            org.docx4j.finders.CommentFinder
            org.docx4j.jaxb.Context
-           org.docx4j.anon.Anonymize
-           org.docx4j.openpackaging.packages.WordprocessingMLPackage))
+           [org.docx4j.openpackaging.parts.WordprocessingML CommentsExtendedPart CommentsPart]))
 
 (defn docx->wml-package
   [docx-file]
