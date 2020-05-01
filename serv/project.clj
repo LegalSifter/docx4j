@@ -2,12 +2,17 @@
             :description "FIXME: write description"
             :url "http://example.com/FIXME"
             :min-lein-version "2.0.0"
-            :dependencies [[org.clojure/clojure "1.10.0"]
-                           [org.docx4j/docx4j-core "8.1.6"]
-                           [org.docx4j/docx4j-docx-anon "8.1.6"]
+            :dependencies [[org.clojure/clojure "1.9.0"]
+                           ;; part of https://www.pivotaltracker.com/story/show/172531608
+                           [org.docx4j/docx4j-core "8.1.6-172531608"]
+
                            [org.docx4j/docx4j-openxml-objects "8.1.6"]
-                           ;; https://mvnrepository.com/artifact/org.docx4j/docx4j-JAXB-Internal
                            [org.docx4j/docx4j-JAXB-Internal "8.1.6"]
+                           [org.docx4j/docx4j-JAXB-ReferenceImpl "8.1.6"]
+                           [org.docx4j/docx4j-docx-anon "8.1.6"]
+
+                           [slingshot "0.12.2"]
+                           [com.taoensso/timbre "4.8.0"]
                            [org.apache.commons/commons-compress "1.13"]
                            [compojure "1.6.1"]
                            [cheshire "5.7.0"]
