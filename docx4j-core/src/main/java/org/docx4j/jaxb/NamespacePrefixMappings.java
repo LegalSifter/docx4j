@@ -531,6 +531,9 @@ public class NamespacePrefixMappings implements NamespaceContext, org.docx4j.org
 		if (namespaceUri.equals("http://schemas.microsoft.com/office/word/2018/wordml/cex"))
 			return "w16cex";
 			
+    if (namespaceUri.equals("http://www.naverage.com/structuredOfficeDocument"))
+			return "nav";
+
     	return suggestion;
     }
     
@@ -774,6 +777,9 @@ public class NamespacePrefixMappings implements NamespaceContext, org.docx4j.org
 		
 		if (prefix.equals("w16cex"))
 			return "http://schemas.microsoft.com/office/word/2018/wordml/cex";
+
+		if (prefix.equals("nav"))
+			return "http://www.naverage.com/structuredOfficeDocument";
 
 		// OpenDoPE
 		if (prefix.equals("odx"))
