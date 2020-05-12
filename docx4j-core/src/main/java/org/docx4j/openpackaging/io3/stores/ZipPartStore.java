@@ -31,6 +31,7 @@ import java.io.Serializable;
 import java.nio.ByteBuffer;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.Set;
 import java.util.zip.CRC32;
 
 import javax.xml.transform.dom.DOMSource;
@@ -72,6 +73,13 @@ public class ZipPartStore implements PartStore {
 
 
 	HashMap<String, ByteArray> partByteArrays;
+	
+	/**
+	 * HACK: Adding this so I can have access to the keys of partByteArrays
+	 */
+	public Set<String> getXmlFilepaths()  {
+		return partByteArrays.keySet();
+	}
 	
 	long MAX_BYTES_Unzip_Error = -1;
 	
