@@ -52,7 +52,11 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "JcEnumeration")
 @XmlEnum
 public enum JcEnumeration {
-
+	@XmlEnumValue("start")
+	START("start"),
+	
+	@XmlEnumValue("end")
+	END("end"),
 
     /**
      * Align Left
