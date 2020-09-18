@@ -21,26 +21,22 @@
 
 package org.docx4j;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.StringReader;
-import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
+import org.docx4j.jaxb.*;
+import org.docx4j.openpackaging.exceptions.Docx4JException;
+import org.docx4j.openpackaging.parts.JaxbXmlPart;
+import org.docx4j.org.apache.xml.security.Init;
+import org.docx4j.org.apache.xml.security.c14n.CanonicalizationException;
+import org.docx4j.org.apache.xml.security.c14n.Canonicalizer;
+import org.docx4j.org.apache.xml.security.c14n.InvalidCanonicalizerException;
+import org.docx4j.utils.XPathFactoryUtil;
+import org.docx4j.utils.XmlSerializerUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.w3c.dom.*;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
-import javax.xml.bind.Binder;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBElement;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.UnmarshalException;
-import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.*;
 import javax.xml.bind.util.JAXBResult;
 import javax.xml.bind.util.JAXBSource;
 import javax.xml.crypto.dsig.CanonicalizationMethod;
@@ -53,42 +49,15 @@ import javax.xml.parsers.SAXParserFactory;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-import javax.xml.transform.ErrorListener;
-import javax.xml.transform.Templates;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
-
-import org.docx4j.jaxb.Context;
-import org.docx4j.jaxb.JAXBAssociation;
-import org.docx4j.jaxb.JaxbValidationEventHandler;
-import org.docx4j.jaxb.McIgnorableNamespaceDeclarator;
-import org.docx4j.jaxb.NamespacePrefixMapperUtils;
-import org.docx4j.jaxb.NamespacePrefixMappings;
-import org.docx4j.jaxb.XPathBinderAssociationIsPartialException;
-import org.docx4j.openpackaging.exceptions.Docx4JException;
-import org.docx4j.openpackaging.parts.JaxbXmlPart;
-import org.docx4j.org.apache.xml.security.Init;
-import org.docx4j.org.apache.xml.security.c14n.CanonicalizationException;
-import org.docx4j.org.apache.xml.security.c14n.Canonicalizer;
-import org.docx4j.org.apache.xml.security.c14n.InvalidCanonicalizerException;
-import org.docx4j.utils.XPathFactoryUtil;
-import org.docx4j.utils.XmlSerializerUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.w3c.dom.Attr;
-import org.w3c.dom.Document;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
+import java.io.*;
+import java.util.*;
 
 public class XmlUtils {
 	
@@ -1411,15 +1380,16 @@ public class XmlUtils {
 				 jaxbElement,  xpathExpr,  refreshXmlFirst);
 		
         List<Object> resultList = new ArrayList<Object>();
-        for( JAXBAssociation association : associations ) {
-        	if (association.getJaxbObject()==null) {
-        		
-        		// this association is partial; see JAXBAssociation javadoc for more
-        		throw new XPathBinderAssociationIsPartialException("no object association for xpath result: " 
-        				+ association.getDomNode().getNodeName());
-        	} else {
-        		resultList.add(association.getJaxbObject());        		
-        	}
+		for( JAXBAssociation association : associations ) {
+			if (association.getJaxbObject()==null) {
+				JAXBAssociationError error = new JAXBAssociationError((association));
+				// this association is partial; see JAXBAssociation javadoc for more
+				log.error("no object association for xpath result: " + association.getDomNode().getNodeName() + " " +
+						"with error info ::: " + error.toString());
+				resultList.add(error);
+			} else {
+				resultList.add(association.getJaxbObject());
+			}
         }
         return resultList;
     }

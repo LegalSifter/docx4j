@@ -10,7 +10,7 @@
 
 	<groupId>org.docx4j</groupId>
 	<artifactId>docx4j-parent</artifactId>	
-	<version>8.1.6-172531608</version>
+	<version>8.1.6-174809969</version>
 	
 	<properties>
 		<revision>8.1.6-SNAPSHOT</revision>
