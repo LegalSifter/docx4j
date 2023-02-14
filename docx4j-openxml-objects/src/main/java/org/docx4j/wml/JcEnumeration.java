@@ -53,6 +53,11 @@ import jakarta.xml.bind.annotation.XmlType;
 @XmlEnum
 public enum JcEnumeration {
 
+    @XmlEnumValue("start")
+    START("start"),
+
+    @XmlEnumValue("end")
+    END("end"),
 
     /**
      * Align Left
