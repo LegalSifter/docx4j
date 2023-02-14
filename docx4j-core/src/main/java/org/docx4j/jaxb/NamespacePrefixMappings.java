@@ -542,8 +542,11 @@ public class NamespacePrefixMappings implements NamespaceContext, org.docx4j.org
         
 		if (namespaceUri.equals("http://schemas.microsoft.com/office/drawing/2016/5/14/chartex"))
 			return "cx8";  
+
+
+		if (namespaceUri.equals("http://www.naverage.com/structuredOfficeDocument"))
+			return "nav";
 		
-				
     	return suggestion;
     }
     
@@ -677,9 +680,12 @@ public class NamespacePrefixMappings implements NamespaceContext, org.docx4j.org
 		
 		if (prefix.equals("w16cex"))
 			return "http://schemas.microsoft.com/office/word/2018/wordml/cex";
+
+		if (prefix.equals("nav"))
+			return "http://www.naverage.com/structuredOfficeDocument";
 		
 		if (prefix.equals("w16cid"))
-				return "http://schemas.microsoft.com/office/word/2016/wordml/cid";
+			return "http://schemas.microsoft.com/office/word/2016/wordml/cid";
 
 		if (prefix.equals("w16se"))
 			return "http://schemas.microsoft.com/office/word/2015/wordml/symex";
