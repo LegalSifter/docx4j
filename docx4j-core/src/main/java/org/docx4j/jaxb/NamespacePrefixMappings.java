@@ -543,6 +543,8 @@ public class NamespacePrefixMappings implements NamespaceContext, org.docx4j.org
 		if (namespaceUri.equals("http://schemas.microsoft.com/office/drawing/2016/5/14/chartex"))
 			return "cx8";  
 
+		if (namespaceUri.equals("http://schemas.microsoft.com/office/drawing/2016/ink"))
+			return "aink";
 
 		if (namespaceUri.equals("http://www.naverage.com/structuredOfficeDocument"))
 			return "nav";
@@ -683,6 +685,9 @@ public class NamespacePrefixMappings implements NamespaceContext, org.docx4j.org
 
 		if (prefix.equals("nav"))
 			return "http://www.naverage.com/structuredOfficeDocument";
+
+		if (prefix.equals("aink"))
+			return "http://schemas.microsoft.com/office/drawing/2016/ink";
 		
 		if (prefix.equals("w16cid"))
 			return "http://schemas.microsoft.com/office/word/2016/wordml/cid";
