@@ -28,7 +28,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -1559,10 +1558,13 @@ public class XmlUtils {
         List<Object> resultList = new ArrayList<Object>();
         for( JAXBAssociation association : associations ) {
         	if (association.getJaxbObject()==null) {
+				JAXBAssociationError error = new JAXBAssociationError(association);
         		
         		// this association is partial; see JAXBAssociation javadoc for more
-        		throw new XPathBinderAssociationIsPartialException("no object association for xpath result: " 
-        				+ association.getDomNode().getNodeName());
+        		log.error("no object association for xpath result: " + association.getDomNode().getNodeName() + " " +
+					"with error info ::: " + error.toString());
+
+				resultList.add(error);
         	} else {
         		resultList.add(association.getJaxbObject());        		
         	}

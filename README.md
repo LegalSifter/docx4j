@@ -1,6 +1,8 @@
 README
 ======
 
+If groovy console gets in a bad shape, run a Java test for sanity.
+Then change the the classpath of the module to docx4j-tests
 
 What is docx4j?
 ---------------

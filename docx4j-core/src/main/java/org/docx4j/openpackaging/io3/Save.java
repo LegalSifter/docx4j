@@ -333,7 +333,12 @@ public class Save {
 //			Relationship r = (Relationship)it.next();
 //			log.info("For Relationship Id=" + r.getId() + " Source is " + r.getSource().getPartName() + ", Target is " + r.getTargetURI() );
 		for ( Relationship r : rp.getRelationships().getRelationship() ) {
-			
+
+			if ("NULL".equals(r.getTarget())) {
+				log.warn("r.getTarget equals NULL for " + r.getId() + " ... skipping");
+				continue;
+			}
+
 			log.debug("For Relationship Id=" + r.getId() 
 					+ " Source is " + rp.getSourceP().getPartName() 
 					+ ", Target is " + r.getTarget() );

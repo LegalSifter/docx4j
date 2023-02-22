@@ -274,8 +274,12 @@ public class Load3 extends Load {
 					
 				// This is usually the first logged comment for
 				// a part, so start with a line break.
-			try {				
-				getPart(pkg, rp, r, ctm);
+			try {
+				if ("NULL".equals(r.getTarget())) {
+					log.warn("r.getTarget equals NULL for " + r.getId() + " ... skipping");
+				} else {
+					getPart(pkg, rp, r, ctm);
+				}
 			} catch (Docx4JException e) {
 				throw e;
 			} catch (Exception e) {
