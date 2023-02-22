@@ -33,7 +33,7 @@
         <module>docx4j-openxml-objects-sml</module>
         <module>docx4j-core</module>
 
-		<!-- commenting out this stuff, it's not needed to build docx4j-core -->
+	<!-- commenting out this stuff, it's not needed to build docx4j-core -->
         <!-- <module>docx4j-core-tests</module> --> <!--  needs docx4j-JAXB-Internal  -->
         <!-- <module>docx4j-diffx</module> -->
         <!-- <module>docx4j-docx-anon</module> -->
