@@ -145,34 +145,38 @@ public final class FontCache implements Serializable {
      *         it could not be read)
      */
     public static FontCache loadFrom(File cacheFile) {
-        if (cacheFile.exists()) {
-            try {
-                if (log.isTraceEnabled()) {
-                    log.trace("Loading font cache from " + cacheFile.getCanonicalPath());
-                }
-                InputStream in = new java.io.FileInputStream(cacheFile);
-                in = new java.io.BufferedInputStream(in);
-                ObjectInputStream oin = new ObjectInputStream(in);
-                try {
-                    return (FontCache)oin.readObject();
-                } finally {
-                    IOUtils.closeQuietly(oin);
-                }
-            } catch (ClassNotFoundException e) {
-                //We don't really care about the exception since it's just a cache file
-                log.warn("Could not read font cache. Discarding font cache file. Reason: "
-                        + e.getMessage());
-            } catch (IOException ioe) {
-                //We don't really care about the exception since it's just a cache file
-                log.warn("I/O exception while reading font cache (" + ioe.getMessage()
-                        + "). Discarding font cache file.");
-                try {
-                    cacheFile.delete();
-                } catch (SecurityException ex) {
-                    log.warn("Failed to delete font cache file: " + cacheFile.getAbsolutePath());
-                }
-            }
-        }
+        // disabling cache: https://stackoverflow.com/questions/39228918/java-deserialization-of-untrusted-data-workaround
+        // TODO: follow controls here: https://owasp.org/www-community/vulnerabilities/Deserialization_of_untrusted_data
+        // ideally, we should use Java Cryptography Extension and/or Java Cryptography Architecture to sign the files
+        // if (cacheFile.exists()) {
+        //     try {
+        //         if (log.isTraceEnabled()) {
+        //             log.trace("Loading font cache from " + cacheFile.getCanonicalPath());
+        //         }
+        //         InputStream in = new java.io.FileInputStream(cacheFile);
+        //         in = new java.io.BufferedInputStream(in);
+        //         ObjectInputStream oin = new ObjectInputStream(in);
+        //         try {
+        //             return (FontCache)oin.readObject();
+        //         } finally {
+        //             IOUtils.closeQuietly(oin);
+        //         }
+        //     } catch (ClassNotFoundException e) {
+        //         //We don't really care about the exception since it's just a cache file
+        //         log.warn("Could not read font cache. Discarding font cache file. Reason: "
+        //                 + e.getMessage());
+        //     } catch (IOException ioe) {
+        //         //We don't really care about the exception since it's just a cache file
+        //         log.warn("I/O exception while reading font cache (" + ioe.getMessage()
+        //                 + "). Discarding font cache file.");
+        //         try {
+        //             cacheFile.delete();
+        //         } catch (SecurityException ex) {
+        //             log.warn("Failed to delete font cache file: " + cacheFile.getAbsolutePath());
+        //         }
+        //     }
+        // }
+        log.warn("Cache is disabled");
         return null;
     }
 
@@ -190,27 +194,31 @@ public final class FontCache implements Serializable {
      * @throws FOPException fop exception
      */
     public void saveTo(File cacheFile) throws FOPException {
-        synchronized (changeLock) {
-            if (changed) {
-                try {
-                    if (log.isTraceEnabled()) {
-                        log.trace("Writing font cache to " + cacheFile.getCanonicalPath());
-                    }
-                    OutputStream out = new java.io.FileOutputStream(cacheFile);
-                    out = new java.io.BufferedOutputStream(out);
-                    ObjectOutputStream oout = new ObjectOutputStream(out);
-                    try {
-                        oout.writeObject(this);
-                    } finally {
-                        IOUtils.closeQuietly(oout);
-                    }
-                } catch (IOException ioe) {
-                    LogUtil.handleException(log, ioe, true);
-                }
-                changed = false;
-                log.trace("Cache file written.");
-            }
-        }
+        // disabling cache: https://stackoverflow.com/questions/39228918/java-deserialization-of-untrusted-data-workaround
+        // TODO: follow controls here: https://owasp.org/www-community/vulnerabilities/Deserialization_of_untrusted_data
+        // ideally, we should use Java Cryptography Extension and/or Java Cryptography Architecture to sign the files
+        // synchronized (changeLock) {
+        //     if (changed) {
+        //         try {
+        //             if (log.isTraceEnabled()) {
+        //                 log.trace("Writing font cache to " + cacheFile.getCanonicalPath());
+        //             }
+        //             OutputStream out = new java.io.FileOutputStream(cacheFile);
+        //             out = new java.io.BufferedOutputStream(out);
+        //             ObjectOutputStream oout = new ObjectOutputStream(out);
+        //             try {
+        //                 oout.writeObject(this);
+        //             } finally {
+        //                 IOUtils.closeQuietly(oout);
+        //             }
+        //         } catch (IOException ioe) {
+        //             LogUtil.handleException(log, ioe, true);
+        //         }
+        //         changed = false;
+        //         log.trace("Cache file written.");
+        //     }
+        // }
+        log.warn("Cache is disabled");
     }
 
     /**
@@ -437,7 +445,11 @@ public final class FontCache implements Serializable {
             }
         } catch (IOException e) {
             // Should never happen, because URL must be local
+<<<<<<< HEAD
             log.debug("IOError: " + e.getMessage());
+=======
+            log.debug("IOError: " + "");
+>>>>>>> 798f511da ([#184540251] Deserialization of Untrusted Data (1))
             return 0;
         }
     }
