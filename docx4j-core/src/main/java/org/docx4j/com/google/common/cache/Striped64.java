@@ -11,7 +11,7 @@
 
 package org.docx4j.com.google.common.cache;
 
-import java.util.Random;
+import java.security.SecureRandom;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.docx4j.com.google.common.annotations.GwtIncompatible;
 
@@ -128,7 +128,7 @@ abstract class Striped64 extends Number {
   static final ThreadLocal<int[]> threadHashCode = new ThreadLocal<>();
 
   /** Generator of new random hash codes */
-  static final Random rng = new Random();
+  static final SecureRandom rng = new SecureRandom();
 
   /** Number of CPUS, to place bound on table size */
   static final int NCPU = Runtime.getRuntime().availableProcessors();

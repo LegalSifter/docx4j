@@ -20,7 +20,7 @@
 
 package org.docx4j.openpackaging.parts.PresentationML;
 
-import java.util.Random;
+import java.security.SecureRandom;
 
 import org.docx4j.openpackaging.contenttype.ContentTypes;
 import org.docx4j.openpackaging.exceptions.InvalidFormatException;
@@ -60,8 +60,8 @@ public abstract class JaxbPmlPart<E> extends JaxbXmlPartXPathAware<E>  {
 	
 	protected final static String COLOR_MAPPING = "<p:clrMap xmlns:p=\"http://schemas.openxmlformats.org/presentationml/2006/main\" bg1=\"lt1\" tx1=\"dk1\" bg2=\"lt2\" tx2=\"dk2\" accent1=\"accent1\" accent2=\"accent2\" accent3=\"accent3\" accent4=\"accent4\" accent5=\"accent5\" accent6=\"accent6\" hlink=\"hlink\" folHlink=\"folHlink\"/>";
 	
-	protected static Random random = new Random();
-	
+	protected static SecureRandom random = new SecureRandom();
+
 	public static long getSlideLayoutOrMasterId() {
 		// See spec 4.8.18 (ST_SlideLayoutId) and 4.8.20 (ST_SlideMasterId)
 		long val = random.nextInt(2147483647) + 2147483648l;

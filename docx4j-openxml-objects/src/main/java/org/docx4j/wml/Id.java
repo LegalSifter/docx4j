@@ -123,26 +123,26 @@ public class Id implements Child
 
     public boolean equals(Object obj) {
     	if (obj instanceof Id) {
-	    		return val.equals( ((Id)obj).getVal() ); 
+	    		return val.equals( ((Id)obj).getVal() );
 	    	} else {
 	    		return false;
 	    	}
 	    }
-	   
+
 	    public int hashCode() {
-	    	
+
 	    	if (val==null) {
 	    		
-	        	java.math.BigInteger newIdVal = java.math.BigInteger.valueOf(Math.abs(new java.util.Random().nextInt()));
+	        	java.math.BigInteger newIdVal = java.math.BigInteger.valueOf(Math.abs(new java.security.SecureRandom().nextInt()));
 	        	this.setVal( newIdVal );
     			log.warn("Generated Id val " + newIdVal);
 	    		
 	    	}
-	    	
+
 	    	// Natural and good enough...
     		return val.intValue();
 	    }
-        
-    
-    
+
+
+
 }
