@@ -109,8 +109,6 @@ public class UnzippedPartStore implements PartStore {
 
 		String filePath = dir.getPath() + dir.separator + partName;
 
-		System.out.println("Using " + filePath);
-
 		InputStream is;
 		try {
 			is = new FileInputStream(new File(filePath)); 

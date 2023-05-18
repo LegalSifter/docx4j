@@ -67,7 +67,6 @@ public class POIFSDump {
                 continue;
             }
             
-            System.out.println("Dumping " + args[i]);
             FileInputStream is = new FileInputStream(args[i]);
             NPOIFSFileSystem fs = new NPOIFSFileSystem(is);
             is.close();
