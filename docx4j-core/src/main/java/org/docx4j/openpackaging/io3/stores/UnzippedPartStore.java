@@ -40,6 +40,7 @@ import org.docx4j.openpackaging.parts.Part;
 import org.docx4j.openpackaging.parts.PartName;
 import org.docx4j.openpackaging.parts.XmlPart;
 import org.docx4j.openpackaging.parts.WordprocessingML.BinaryPart;
+import org.docx4j.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -182,6 +183,10 @@ public class UnzippedPartStore implements PartStore {
 		}
 
 		String filePath = dir.getPath() + dir.separator + targetName;
+		if (!StringUtils.validFilePath(filePath)) {
+			throw new Docx4JException("Invalid filepath, filepath in UnzippedPartStore/saveJaxbXmlPart contains characters that could be used for directory traversal");
+		}
+
 		System.out.println("Saving " + filePath);
 		try {
 

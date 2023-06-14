@@ -56,6 +56,7 @@ import org.docx4j.openpackaging.parts.PartName;
 import org.docx4j.openpackaging.parts.XmlPart;
 import org.docx4j.openpackaging.parts.WordprocessingML.BinaryPart;
 import org.docx4j.openpackaging.parts.WordprocessingML.OleObjectBinaryPart;
+import org.docx4j.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -99,6 +100,10 @@ public class ZipPartStore implements PartStore {
 		
 		log.info("Filepath = " + f.getPath() );
 
+		if (!StringUtils.validFilePath(f.getPath())) {
+			throw new Docx4JException("Invalid filepath, filepath in ZipPartStore contains characters that could be used for directory traversal");
+		}
+
 		ZipFile zf = null;
 		try {
 			if (!f.exists()) {
@@ -106,7 +111,7 @@ public class ZipPartStore implements PartStore {
 			}
 			zf = new ZipFile(f);
 		} catch (IOException ioe) {
-			ioe.printStackTrace() ;
+			log.error("Couldn't get ZipFile; IOException in ZipPartStore");
 			throw new Docx4JException("Couldn't get ZipFile", ioe);
 		}
 
@@ -130,7 +135,7 @@ public class ZipPartStore implements PartStore {
 		 try {
 			 zf.close();
 		 } catch (IOException exc) {
-			 exc.printStackTrace();
+			log.error("Couldn't get ZipFile; IOException in ZipPartStore");
 		 }
 	}
 	
@@ -194,6 +199,13 @@ public class ZipPartStore implements PartStore {
 			BufferedInputStream bufIn = new BufferedInputStream(is);
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			BufferedOutputStream bos = new BufferedOutputStream(baos);
+
+			if (bufIn.available() == 0) {
+				log.warn("WARNING: InputStream not ready - if you are using a FileInputStream, "
+					+ "make sure you create it with bufferSize=1");
+				return new byte[0];
+			}
+
 			int c = bufIn.read();
 			while (c != -1) {
 				bos.write(c);

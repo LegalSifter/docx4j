@@ -31,6 +31,7 @@ import java.lang.reflect.Field;
 import java.nio.ByteBuffer;
 import java.util.Iterator;
 
+import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.docx4j.org.apache.poi.poifs.common.POIFSConstants;
 import org.docx4j.org.apache.poi.poifs.filesystem.DirectoryEntry;
 import org.docx4j.org.apache.poi.poifs.filesystem.DocumentInputStream;
@@ -40,6 +41,7 @@ import org.docx4j.org.apache.poi.poifs.filesystem.NPOIFSFileSystem;
 import org.docx4j.org.apache.poi.poifs.filesystem.NPOIFSStream;
 import org.docx4j.org.apache.poi.poifs.property.NPropertyTable;
 import org.docx4j.org.apache.poi.poifs.storage.HeaderBlock;
+import org.docx4j.utils.StringUtils;
 
 /**
  * Dump internal structure of a OLE2 file into file system
@@ -106,7 +108,7 @@ public class POIFSDump {
         return table;
     }
 
-    public static void dump(DirectoryEntry root, File parent) throws IOException {
+    public static void dump(DirectoryEntry root, File parent) throws IOException, Docx4JException {
         for(Iterator<Entry> it = root.getEntries(); it.hasNext();){
             Entry entry = it.next();
             if(entry instanceof DocumentNode){
@@ -115,6 +117,13 @@ public class POIFSDump {
                 byte[] bytes = new byte[node.getSize()];
                 is.read(bytes);
                 is.close();
+
+                if (!StringUtils.validFilePath(parent.getPath())) {
+                    throw new Docx4JException("Invalid filepath, parent in POIFSDump/dump contains characters that could be used for directory traversal");
+                }
+                if (!StringUtils.validFilePath(node.getName().trim())) {
+                    throw new Docx4JException("Invalid filepath, node in POIFSDump/dump contains characters that could be used for directory traversal");
+                }
 
                 OutputStream out = new FileOutputStream(new File(parent, node.getName().trim()));
                 try {

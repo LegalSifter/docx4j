@@ -73,6 +73,7 @@ import org.docx4j.openpackaging.parts.opendope.XPathsPart;
 import org.docx4j.openpackaging.parts.relationships.Namespaces;
 import org.docx4j.openpackaging.parts.relationships.RelationshipsPart;
 import org.docx4j.relationships.Relationship;
+import org.docx4j.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -140,6 +141,10 @@ public class LoadFromZipNG extends Load {
 	public OpcPackage get(File f) throws Docx4JException {
 		log.info("Filepath = " + f.getPath() );
 		
+		if (!StringUtils.validFilePath(f.getPath())) {
+			throw new Docx4JException("Invalid filepath, filepath in OpcPackage contains characters that could be used for directory traversal");
+		}
+
 		ZipFile zf = null;
 		try {
 			if (!f.exists()) {
@@ -147,7 +152,7 @@ public class LoadFromZipNG extends Load {
 			}
 			zf = new ZipFile(f);
 		} catch (IOException ioe) {
-			ioe.printStackTrace() ;
+			log.error("LoadFromZipNG; IOException trying to open " + f.getName() + " as ZIP File");
 			throw new Docx4JException("Couldn't get ZipFile", ioe);
 		}
 				
@@ -161,14 +166,14 @@ public class LoadFromZipNG extends Load {
 				byte[] bytes =  getBytesFromInputStream( zf.getInputStream(entry) );
 				partByteArrays.put(entry.getName(), new ByteArray(bytes) );
 			} catch (Exception e) {
-				e.printStackTrace() ;
+				log.error("LoadFromZipNG; Exception reading zip entry " + entry.getName() );
 			}	
 		}
 		 // At this point, we've finished with the zip file
 		 try {
 			 zf.close();
 		 } catch (IOException exc) {
-			 exc.printStackTrace();
+			 log.error("LoadFromZipNG; IOException closing zip file " + f.getName() );
 		 }
 		 
 		
@@ -291,7 +296,7 @@ public class LoadFromZipNG extends Load {
 			rp.unmarshal(is);
 			
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("LoadFromZipNG; Exception - error getting document from Zipped Part:" + partName, e);
 			throw new Docx4JException("Error getting document from Zipped Part:" + partName, e);
 			
 		} finally {
@@ -299,7 +304,7 @@ public class LoadFromZipNG extends Load {
 				try {
 					is.close();
 				} catch (IOException exc) {
-					exc.printStackTrace();
+					log.error("LoadFromZipNG; IOException closing input stream from Zipped Part:" + partName, exc);
 				}
 			}
 		}
@@ -665,7 +670,7 @@ public class LoadFromZipNG extends Load {
 						
 					} catch (javax.xml.bind.UnmarshalException ue) {
 
-						log.warn("No JAXB model for this CustomXmlDataStorage part; " + ue.getMessage()  );
+						log.warn("No JAXB model for this CustomXmlDataStorage part; LoadFromZipNG;" );
 						
 						CustomXmlDataStorage data = getCustomXmlDataStorageClass().factory();	
 						is.reset();
@@ -709,7 +714,7 @@ public class LoadFromZipNG extends Load {
 			}
 		} catch (Exception ex) {
 			// IOException, URISyntaxException
-			ex.printStackTrace();
+			log.error("Error getting part; LoadFromZipNG");
 			throw new Docx4JException("Failed to getPart", ex);			
 			
 		} finally {
@@ -717,7 +722,7 @@ public class LoadFromZipNG extends Load {
 				try {
 					is.close();
 				} catch (IOException exc) {
-					exc.printStackTrace();
+					log.error("IOException closing input stream from Zipped Part");
 				}
 			}
 		}
@@ -750,13 +755,13 @@ public class LoadFromZipNG extends Load {
 			log.info("Stored as BinaryData" );
 			
 		} catch (Exception ioe) {
-			ioe.printStackTrace() ;
+			log.error("Error getting part; LoadFromZipNG");
 		} finally {
 			if (in != null) {
 				try {
 					in.close();
 				} catch (IOException exc) {
-					exc.printStackTrace();
+					log.error("IOException closing input stream from Zipped Part");
 				}
 			}
 		}
