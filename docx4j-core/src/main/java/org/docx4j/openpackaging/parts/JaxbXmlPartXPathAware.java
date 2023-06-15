@@ -421,6 +421,7 @@ implements XPathEnabled<E> {
 							        XMLInputFactory xif = XMLInputFactory.newInstance();
 							        xif.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, false);
 							        xif.setProperty(XMLInputFactory.SUPPORT_DTD, false); // a DTD is merely ignored, its presence doesn't cause an exception
+									xif.setProperty(XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES, false);
 						        	XMLStreamReader xsr = xif.createXMLStreamReader(is2);
 									
 									XmlUtils.transform(new StAXSource(xsr), 
@@ -461,6 +462,7 @@ implements XPathEnabled<E> {
 			        XMLInputFactory xif = XMLInputFactory.newInstance();
 			        xif.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, false);
 			        xif.setProperty(XMLInputFactory.SUPPORT_DTD, false); // a DTD is merely ignored, its presence doesn't cause an exception
+					xif.setProperty(XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES, false);
 			        XMLStreamReader xsr = xif.createXMLStreamReader(is);			
 				    
 			        // XMLStreamReaderWrapper xsrw = new XMLStreamReaderWrapper(this, xsr)

@@ -302,6 +302,20 @@ public class XmlUtils {
 			StackTraceElement[] elements = e.getStackTrace();
 			if (elements.length>0) log.warn(elements[0].toString());				
 		}
+		try {
+			documentBuilderFactory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+		} catch (ParserConfigurationException e) {
+			log.warn("");
+			StackTraceElement[] elements = e.getStackTrace();
+			if (elements.length>0) log.warn(elements[0].toString());
+		}
+		try {
+			documentBuilderFactory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+		} catch (ParserConfigurationException e) {
+			log.warn("");
+			StackTraceElement[] elements = e.getStackTrace();
+			if (elements.length>0) log.warn(elements[0].toString());
+		}
 //		try {
 //			documentBuilderFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
 //		} catch (ParserConfigurationException e) { log.error(e.getMessage(), e); }

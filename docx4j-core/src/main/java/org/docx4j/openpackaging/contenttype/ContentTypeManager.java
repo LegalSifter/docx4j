@@ -829,6 +829,7 @@ public class ContentTypeManager  {
 	        XMLInputFactory xif = XMLInputFactory.newInstance();
 	        xif.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, false);
 	        xif.setProperty(XMLInputFactory.SUPPORT_DTD, false); // a DTD is merely ignored, its presence doesn't cause an exception
+			xif.setProperty(XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES, false);
 	        XMLStreamReader xsr = xif.createXMLStreamReader(contentTypes);			
 	        
 			Unmarshaller u = Context.jcContentTypes.createUnmarshaller();
@@ -923,7 +924,7 @@ public class ContentTypeManager  {
 
 		} catch (JAXBException e) {
 			//e.printStackTrace();
-			log.error(e.getMessage(), e);
+			log.error("ContentTypeManager; JAXBException 927");
 			throw e;
 		}
     }
@@ -941,7 +942,7 @@ public class ContentTypeManager  {
 
 		} catch (JAXBException e) {
 			//e.printStackTrace();
-			log.error(e.getMessage(), e);
+			log.error("ContentTypeManager; JAXBException 945");
 			throw e;
 		}
 	}
