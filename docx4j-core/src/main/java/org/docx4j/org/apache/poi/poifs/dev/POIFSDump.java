@@ -69,6 +69,10 @@ public class POIFSDump {
                 continue;
             }
             
+            if (!StringUtils.validFilePath(args[i])) {
+                throw new Docx4JException("Invalid filepath, filepath in POIFSDump/args[i] contains characters that could be used for directory traversal");
+            }
+
             FileInputStream is = new FileInputStream(args[i]);
             NPOIFSFileSystem fs = new NPOIFSFileSystem(is);
             is.close();

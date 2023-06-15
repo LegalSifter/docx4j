@@ -30,6 +30,8 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import org.apache.commons.io.IOUtils;
+import org.docx4j.openpackaging.exceptions.Docx4JException;
+import org.docx4j.utils.StringUtils;
 
 /**
  * Reads a TrueType font file into a byte array and
@@ -59,7 +61,10 @@ public class FontFileReader {
      * @param fileName filename to read
      * @throws IOException In case of an I/O problem
      */
-    public FontFileReader(String fileName) throws IOException {
+    public FontFileReader(String fileName) throws IOException, Docx4JException {
+        if (!StringUtils.validFilePath(fileName)) {
+            throw new Docx4JException("Invalid filepath, fileName in FontFileReader contains characters that could be used for directory traversal");
+        }
         final File f = new File(fileName);
         InputStream in = new java.io.FileInputStream(f);
         try {
