@@ -515,6 +515,9 @@ public class CryptoFunctions {
             obfuscationArray[i] = rotateLeft(obfuscationArray[i], nRotateSize);
         }
         
+        passBytes = null;
+        System.gc();
+
         return obfuscationArray;
     }
 
