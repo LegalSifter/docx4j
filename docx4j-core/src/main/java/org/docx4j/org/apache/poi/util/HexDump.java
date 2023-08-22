@@ -468,7 +468,7 @@ public class HexDump {
         InputStream in = new BufferedInputStream(new FileInputStream(file));
         byte[] b = new byte[(int)file.length()];
         in.read(b);
-        System.out.println(HexDump.dump(b, 0, 0));
+        HexDump.dump(b, 0, 0);
         in.close();
     }
 }

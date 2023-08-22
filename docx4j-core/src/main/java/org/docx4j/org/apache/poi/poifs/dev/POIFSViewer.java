@@ -89,7 +89,7 @@ public class POIFSViewer
 
             while (iter.hasNext())
             {
-                System.out.print(iter.next());
+                iter.next();
             }
         }
         catch (IOException e)
