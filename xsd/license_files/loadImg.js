@@ -1,4 +1,12 @@
 
+function escapeHtml(unsafe) {
+    return unsafe
+         .replace(/&/g, "&amp;")
+         .replace(/</g, "&lt;")
+         .replace(/>/g, "&gt;")
+         .replace(/"/g, "&quot;")
+         .replace(/'/g, "&#039;");
+ }
 
 function newImage(arg) {
 	if (document.images) {
@@ -70,7 +78,7 @@ function writeURL()
 			
 			
 		//the url of the original web page
-			url= replaceString("/flat",'',loc)
+			url = encodeURIComponent(escapeHtml(replaceString("/flat",'',loc)));
 			document.write(url);    
  }
 
