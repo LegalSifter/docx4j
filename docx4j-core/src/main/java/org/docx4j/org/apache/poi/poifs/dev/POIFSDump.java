@@ -31,6 +31,7 @@ import java.lang.reflect.Field;
 import java.nio.ByteBuffer;
 import java.util.Iterator;
 
+import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.docx4j.org.apache.poi.poifs.common.POIFSConstants;
 import org.docx4j.org.apache.poi.poifs.filesystem.DirectoryEntry;
 import org.docx4j.org.apache.poi.poifs.filesystem.DocumentInputStream;
@@ -40,6 +41,7 @@ import org.docx4j.org.apache.poi.poifs.filesystem.NPOIFSFileSystem;
 import org.docx4j.org.apache.poi.poifs.filesystem.NPOIFSStream;
 import org.docx4j.org.apache.poi.poifs.property.NPropertyTable;
 import org.docx4j.org.apache.poi.poifs.storage.HeaderBlock;
+import org.docx4j.utils.StringUtils;
 
 /**
  * Dump internal structure of a OLE2 file into file system
@@ -65,6 +67,10 @@ public class POIFSDump {
                 args[i].equalsIgnoreCase("-dump-mini-stream")) {
                 dumpMini = true;
                 continue;
+            }
+
+            if (!StringUtils.validFilePath(args[i])) {
+                throw new Docx4JException("Invalid filepath, filepath in POIFSDump/args[i] contains characters that could be used for directory traversal");
             }
             
             FileInputStream is = new FileInputStream(args[i]);

@@ -40,6 +40,7 @@ import org.docx4j.openpackaging.parts.Part;
 import org.docx4j.openpackaging.parts.PartName;
 import org.docx4j.openpackaging.parts.XmlPart;
 import org.docx4j.openpackaging.parts.WordprocessingML.BinaryPart;
+import org.docx4j.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -108,6 +109,9 @@ public class UnzippedPartStore implements PartStore {
 	public InputStream loadPart(String partName) throws  Docx4JException {
 
 		String filePath = dir.getPath() + dir.separator + partName;
+		if (!StringUtils.validFilePath(filePath)) {
+			throw new Docx4JException("Invalid filepath, filepath in UnzippedPartStore/loadPart contains characters that could be used for directory traversal");
+		}
 
 		InputStream is;
 		try {
@@ -124,6 +128,9 @@ public class UnzippedPartStore implements PartStore {
 	public long getPartSize(String partName) throws Docx4JException {
 		
 		String filePath = dir.getPath() + dir.separator + partName;
+		if (!StringUtils.validFilePath(filePath)) {
+			throw new Docx4JException("Invalid filepath, filepath in UnzippedPartStore/getPartSize contains characters that could be used for directory traversal");
+		}
 		
 		File f = new File(filePath);
 		if (f.exists()) {
@@ -143,6 +150,10 @@ public class UnzippedPartStore implements PartStore {
 		log.info("Renaming part " + oldName.getName() + " to " + newName.getName() );
 
 		String filePath = dir.getPath() + dir.separator + oldName.getName();
+		if (!StringUtils.validFilePath(filePath)) {
+			log.error("Invalid filepath, filepath in UnzippedPartStore/rename contains characters that could be used for directory traversal; not renaming");
+			return;
+		}
 		File f = new File(filePath); 
 		f.renameTo(new File(dir.getPath() + dir.separator + newName.getName()) );
 		
@@ -162,6 +173,9 @@ public class UnzippedPartStore implements PartStore {
 		try {
 
 			String filePath = dir.getPath() + dir.separator + "[Content_Types].xml";
+			if (!StringUtils.validFilePath(filePath)) {
+				throw new Docx4JException("Invalid filepath, filepath in UnzippedPartStore/saveContentTypes contains characters that could be used for directory traversal");
+			}
 			FileOutputStream fos = new FileOutputStream(new File(filePath));
 	        ctm.marshal(fos);
 	        fos.close();
@@ -182,6 +196,9 @@ public class UnzippedPartStore implements PartStore {
 		}
 
 		String filePath = dir.getPath() + dir.separator + targetName;
+		if (!StringUtils.validFilePath(filePath)) {
+			throw new Docx4JException("Invalid filepath, filepath in UnzippedPartStore/saveJaxbXmlPart contains characters that could be used for directory traversal");
+		}
 		System.out.println("Saving " + filePath);
 		try {
 
@@ -229,6 +246,9 @@ public class UnzippedPartStore implements PartStore {
 		String targetName = part.getPartName().getName().substring(1);
 
 		String filePath = dir.getPath() + dir.separator + targetName;
+		if (!StringUtils.validFilePath(filePath)) {
+			throw new Docx4JException("Invalid filepath, filepath in UnzippedPartStore/saveCustomXmlDataStoragePart contains characters that could be used for directory traversal");
+		}
 
 		File file = new File(filePath);
 		file.getParentFile().mkdirs();
@@ -250,6 +270,10 @@ public class UnzippedPartStore implements PartStore {
 		String targetName = part.getPartName().getName().substring(1);
 
 		String filePath = dir.getPath() + dir.separator + targetName;
+		if (!StringUtils.validFilePath(filePath)) {
+			throw new Docx4JException("Invalid filepath, filepath in UnzippedPartStore/saveXmlPart contains characters that could be used for directory traversal");
+		}
+
 		File file = new File(filePath);
 		file.getParentFile().mkdirs();
 
@@ -289,6 +313,9 @@ public class UnzippedPartStore implements PartStore {
 		// Drop the leading '/'
 		String resolvedPartUri = part.getPartName().getName().substring(1);
 		String filePath = dir.getPath() + dir.separator + resolvedPartUri;
+		if (!StringUtils.validFilePath(filePath)) {
+			throw new Docx4JException("Invalid filepath, filepath in UnzippedPartStore/saveBinaryPart contains characters that could be used for directory traversal");
+		}
 		System.out.println("saveBinaryPart " + filePath);
 
 		File file = new File(filePath);
