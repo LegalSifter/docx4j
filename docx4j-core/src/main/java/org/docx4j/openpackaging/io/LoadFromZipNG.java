@@ -47,6 +47,7 @@ import javax.xml.stream.XMLStreamReader;
 
 import org.apache.commons.io.IOUtils;
 import org.docx4j.XmlUtils;
+import org.docx4j.convert.out.fopconf.Substitutions.Substitution.To;
 import org.docx4j.docProps.coverPageProps.CoverPageProperties;
 import org.docx4j.jaxb.Context;
 import org.docx4j.model.datastorage.CustomXmlDataStorage;
@@ -74,6 +75,7 @@ import org.docx4j.openpackaging.parts.opendope.XPathsPart;
 import org.docx4j.openpackaging.parts.relationships.Namespaces;
 import org.docx4j.openpackaging.parts.relationships.RelationshipsPart;
 import org.docx4j.relationships.Relationship;
+import org.docx4j.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -117,6 +119,9 @@ public class LoadFromZipNG extends Load {
 	
 	
 	public OpcPackage get(String filepath) throws Docx4JException {
+		if (!StringUtils.validFilePath(filepath)) {
+			throw new Docx4JException("Invalid filepath, filepath in LoadFromZipNG contains characters that could be used for directory traversal");
+		}
 		return get(new File(filepath));
 	}
 	
@@ -623,6 +628,7 @@ public class LoadFromZipNG extends Load {
 				        XMLInputFactory xif = XMLInputFactory.newInstance();
 				        xif.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, false);
 				        xif.setProperty(XMLInputFactory.SUPPORT_DTD, false); // a DTD is merely ignored, its presence doesn't cause an exception
+						xif.setProperty(XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES, false);
 				        XMLStreamReader xsr = xif.createXMLStreamReader(is);									
 						
 						Unmarshaller u = Context.jc.createUnmarshaller();

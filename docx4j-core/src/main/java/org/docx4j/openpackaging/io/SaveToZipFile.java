@@ -56,6 +56,7 @@ import org.docx4j.openpackaging.parts.WordprocessingML.BinaryPart;
 import org.docx4j.openpackaging.parts.relationships.Namespaces;
 import org.docx4j.openpackaging.parts.relationships.RelationshipsPart;
 import org.docx4j.relationships.Relationship;
+import org.docx4j.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -201,6 +202,10 @@ public class SaveToZipFile {
 	
 	public void  saveRawXmlPart(ZipOutputStream out, Part part, String zipEntryName) throws Docx4JException {
 		
+		if(!StringUtils.validFilePath(zipEntryName)) {
+			throw new Docx4JException("Invalid zipEntryName, zipEntryName in SaveToZipFile/saveRawXmlPart contains characters that could be used for directory traversal");
+		}
+
 		try {
 						
 			if (part instanceof org.docx4j.openpackaging.parts.JaxbXmlPart) {
@@ -419,6 +424,9 @@ public class SaveToZipFile {
 		
 		// Drop the leading '/'
 		String resolvedPartUri = part.getPartName().getName().substring(1);
+		if(!StringUtils.validFilePath(resolvedPartUri)) {
+			throw new Docx4JException("Invalid path, path in SaveToZipFile/savePart contains characters that could be used for directory traversal");
+		}
 		
 		if (handled.get(resolvedPartUri)!=null) {
 			log.debug(".. duplicate save avoided .." );
@@ -461,6 +469,9 @@ public class SaveToZipFile {
 
 		// Drop the leading '/'
 		String resolvedPartUri = part.getPartName().getName().substring(1);
+		if (!StringUtils.validFilePath(resolvedPartUri)) {
+			throw new Docx4JException("Invalid filepath, resolvedPartUri in SaveToZipFile/saveRawBinaryPart contains characters that could be used for directory traversal");
+		}
 
 		try {
 	        // Add ZIP entry to output stream.
