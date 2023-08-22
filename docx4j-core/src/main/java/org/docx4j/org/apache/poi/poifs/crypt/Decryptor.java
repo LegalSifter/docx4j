@@ -38,7 +38,6 @@ import org.docx4j.org.apache.poi.poifs.filesystem.OPOIFSFileSystem;
 import org.docx4j.org.apache.poi.poifs.filesystem.POIFSFileSystem;
 
 public abstract class Decryptor {
-    public static final String DEFAULT_PASSWORD="VelvetSweatshop";
     public static final String DEFAULT_POIFS_ENTRY="EncryptedPackage";
     
     protected final EncryptionInfoBuilder builder;
