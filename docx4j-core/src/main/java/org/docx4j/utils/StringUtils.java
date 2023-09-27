@@ -3,13 +3,13 @@ package org.docx4j.utils;
 public class StringUtils {
 
     /**
-     * Escape user input to avoid directory traversal attacks.
+     * Escape filepath to avoid directory traversal attacks.
      *
-     * @param userInput
+     * @param filepath
      * @return
      */
-    public static String escapeUserInput(String userInput) {
-        return userInput.replaceAll("[^a-zA-Z0-9.-]", "_");
+    public static String escapeFilepath(String filepath) {
+        return filepath.replaceAll("[^a-zA-Z0-9.-\\\/]", "_");
     }
 
     /**
@@ -21,7 +21,7 @@ public class StringUtils {
      * @return
      */
     public static boolean validFilePath(String path) {
-        return path.equals(escapeUserInput(path)) && !path.contains("..");
+        return path.equals(escapeFilepath(path)) && !path.contains("..");
     }
 
 }
