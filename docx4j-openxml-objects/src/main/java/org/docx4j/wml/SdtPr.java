@@ -314,7 +314,7 @@ public class SdtPr
     public java.math.BigInteger setId() {
 
     	Id id = new Id();
-    	java.math.BigInteger newIdVal = java.math.BigInteger.valueOf(Math.abs(new java.util.Random().nextInt()));
+    	java.math.BigInteger newIdVal = java.math.BigInteger.valueOf(Math.abs(new java.security.SecureRandom().nextInt()));
     	id.setVal( newIdVal );
     	setId(id);    	
 		log.debug("Generated random id: " + newIdVal.toString() );

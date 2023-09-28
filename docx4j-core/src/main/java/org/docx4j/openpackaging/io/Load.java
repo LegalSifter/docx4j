@@ -34,6 +34,7 @@ import javax.xml.stream.XMLStreamReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.docx4j.XmlUtils;
+import org.docx4j.convert.out.fopconf.Substitutions.Substitution.To;
 import org.docx4j.docProps.coverPageProps.CoverPageProperties;
 import org.docx4j.jaxb.Context;
 import org.docx4j.model.datastorage.BindingHandler;
@@ -187,6 +188,7 @@ public class Load {
 				        XMLInputFactory xif = XMLInputFactory.newInstance();
 				        xif.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, false);
 				        xif.setProperty(XMLInputFactory.SUPPORT_DTD, false); // a DTD is merely ignored, its presence doesn't cause an exception
+				        xif.setProperty(XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES, false);
 				        XMLStreamReader xsr = xif.createXMLStreamReader(is);									
 						
 						Unmarshaller u = Context.jc.createUnmarshaller();

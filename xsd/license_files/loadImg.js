@@ -1,4 +1,12 @@
 
+function escapeHtml(unsafe) {
+    return unsafe
+         .replace(/&/g, "&amp;")
+         .replace(/</g, "&lt;")
+         .replace(/>/g, "&gt;")
+         .replace(/"/g, "&quot;")
+         .replace(/'/g, "&#039;");
+ }
 
 function newImage(arg) {
 	if (document.images) {
@@ -38,18 +46,31 @@ function PrintThisPage()
 
 if (ptcl == "http:"){
 		oldTerm= splitted[2];
-		newTerm= "/"+oldTerm + "/flat";
-		url=replace2FlatUrl(loc, oldTerm, newTerm)
- 		PopMeThis(url,750, 600,100,25)
+		// oldterm is used directly in a regular expression, so it needs escaped
+		if (oldTerm == escapeRegexCharacters(oldTerm)) // don't allow regex characters
+		{
+			newTerm= "/"+oldTerm + "/flat";
+			url=replace2FlatUrl(loc, oldTerm, newTerm);
+			PopMeThis(url,750, 600,100,25);
+		}
 } 
 else
 {
 		loc=window.location.href.toLowerCase().split("//");
 		oldTerm = loc[1].split("/")[2];
-		newTerm = "/flat/"+oldTerm
-		url=replace2FlatUrl(window.location.href, oldTerm, newTerm)
-		PopMeThis(url,750,600,100,25)
+		// oldterm is used directly in a regular expression, so it needs escaped
+		if (oldTerm === escapeRegexCharacters(oldTerm)) // don't allow regex characters
+		{
+			newTerm = "/flat/"+oldTerm
+			url=replace2FlatUrl(window.location.href, oldTerm, newTerm)
+			PopMeThis(url,750,600,100,25)
+		}
 }
+}
+
+// escape regex characters: https://stackoverflow.com/questions/3561493/is-there-a-regexp-escape-function-in-javascript
+function escapeRegexCharacters(string) {
+    return string.replace(/[/\-\\^$*+?.()|[\]{}]/g, '\\$&');
 }
 
 //  build pop-up window
@@ -70,7 +91,7 @@ function writeURL()
 			
 			
 		//the url of the original web page
-			url= replaceString("/flat",'',loc)
+			url = encodeURIComponent(escapeHtml(replaceString("/flat",'',loc)));
 			document.write(url);    
  }
 

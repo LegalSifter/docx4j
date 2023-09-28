@@ -98,7 +98,7 @@ public class SwitchProcessor {
         propertyResolver = wordMLPackage.getMainDocumentPart().getPropertyResolver();
         styleBasedOnHelper = new StyleBasedOnHelper(propertyResolver);
 
-        int randomSeed = (int)(Math.random()*MILLION);
+        int randomSeed = (int)(new java.security.SecureRandom().nextDouble()*MILLION);
         AtomicInteger seedIndex = getBookmarkId(wordMLPackage);
         
         String anchorValue = "";

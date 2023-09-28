@@ -107,7 +107,7 @@ public class CryptoFunctions {
     public static byte[] hashPassword(String password, HashAlgorithm hashAlgorithm, byte salt[], int spinCount, boolean iteratorFirst) {
         // If no password was given, use the default
         if (password == null) {
-            password = Decryptor.DEFAULT_PASSWORD;
+            password = "";
         }
         
         MessageDigest hashAlg = getMessageDigest(hashAlgorithm);
@@ -515,6 +515,9 @@ public class CryptoFunctions {
             obfuscationArray[i] = rotateLeft(obfuscationArray[i], nRotateSize);
         }
         
+        passBytes = null;
+        System.gc();
+
         return obfuscationArray;
     }
 

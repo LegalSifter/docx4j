@@ -33,6 +33,9 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.text.DecimalFormat;
 
+import org.docx4j.openpackaging.exceptions.Docx4JException;
+import org.docx4j.utils.StringUtils;
+
 /**
  * dump data in hexadecimal format; derived from a HexDump utility I
  * wrote in June 2001.
@@ -464,11 +467,15 @@ public class HexDump {
     }
 
     public static void main(String[] args) throws Exception {
+        if (!StringUtils.validFilePath(args[0])) {
+            throw new Docx4JException("Invalid filepath, filepath in HexDump/args[0] contains characters that could be used for directory traversal");
+        }
+
         File file = new File(args[0]);
         InputStream in = new BufferedInputStream(new FileInputStream(file));
         byte[] b = new byte[(int)file.length()];
         in.read(b);
-        System.out.println(HexDump.dump(b, 0, 0));
+        HexDump.dump(b, 0, 0);
         in.close();
     }
 }
