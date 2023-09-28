@@ -9,7 +9,7 @@ public class StringUtils {
      * @return
      */
     public static String escapeFilepath(String filepath) {
-        return filepath.replaceAll("[^a-zA-Z0-9.-\\/]", "_");
+        return filepath.replaceAll("[^a-zA-Z0-9.-\\\\\\\/]", "_");
     }
 
     /**
