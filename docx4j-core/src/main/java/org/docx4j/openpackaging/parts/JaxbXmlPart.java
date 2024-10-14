@@ -591,45 +591,22 @@ public abstract class JaxbXmlPart<E> /* used directly only by DocProps parts, Re
 				is = XmlUtils.marshaltoInputStream(jaxbElement, true, this.jc);            
 			}
 			if (is!=null) {
+				List<String> lines = IOUtils.readLines(is);
+				String line = lines.get(
+						e.getLocation().getLineNumber()-1);
 
-				try {
-					List<String> lines = IOUtils.readLines(is);
-					String line = lines.get(
-							e.getLocation().getLineNumber()-1);
-					
-					int PRIOR_CHARS = 100;
-					
-					int start = 0;
-					if (e.getLocation().getColumnNumber()>PRIOR_CHARS) {
-						start = e.getLocation().getColumnNumber() - PRIOR_CHARS;
-					}
-					int end = e.getLocation().getColumnNumber() + PRIOR_CHARS;
-					if (end > line.length()-1 ) {
-						end = line.length()-1;
-					}
-					
-					log.error("error is at pos " + PRIOR_CHARS + " in " + line.substring(start, end));
-					
-//					if (e.getMessage().contains("NamespaceURI")) {
-//						// lets print them
-//						if (lines.get(0).endsWith("?>")) {
-//							// assume at start of line 1
-//							line = lines.get(1);
-//						} else {
-//							// assume at start of line 0
-//							line = lines.get(0);
-//						}
-//						end = line.indexOf(">");
-//						if (end<0) end = 2000;
-//						if (end > line.length()-1 ) {
-//							end = line.length()-1;
-//						}
-//						log.error("Namespace decs: " + line.substring(0, end));
-//					}
-					
-				} catch (IOException e1) {
-					e1.printStackTrace();
+				int PRIOR_CHARS = 100;
+
+				int start = 0;
+				if (e.getLocation().getColumnNumber()>PRIOR_CHARS) {
+					start = e.getLocation().getColumnNumber() - PRIOR_CHARS;
 				}
+				int end = e.getLocation().getColumnNumber() + PRIOR_CHARS;
+				if (end > line.length()-1 ) {
+					end = line.length()-1;
+				}
+
+				log.error("error is at pos " + PRIOR_CHARS + " in " + line.substring(start, end));
 			}
 			
 			// now rethrow
